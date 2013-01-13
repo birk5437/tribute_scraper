@@ -22,6 +22,16 @@ File.open("index.html", "w") do |f|
   links_list.each do |ltw|
     f.puts "<a href='#{ltw}'>#{ltw}</a><br />"
   end
+  f.puts "<script type='text/javascript'>"
+  f.puts "  var _gaq = _gaq || [];"
+  f.puts "  _gaq.push(['_setAccount', 'UA-25935389-1']);"
+  f.puts "  _gaq.push(['_trackPageview']);"
+  f.puts "  (function() {"
+  f.puts "    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;"
+  f.puts "    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';"
+  f.puts "    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);"
+  f.puts "  })();"
+  f.puts "</script>"
   f.puts "</body>"
   f.puts "</html>"
 end
