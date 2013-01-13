@@ -1,9 +1,14 @@
 class TributeScraper
+  require 'rubygems'
   require 'nokogiri'
   require 'open-uri'
 
   def get_local_links_list
-    File.read("current_links.txt").split(", ")
+    links_list = []
+    File.open("current_links.txt").each_line do |line|
+      links_list << line.gsub("\n", "")
+    end
+    return links_list
   end
 
   def get_links_from_tweets(url="https://twitter.com/search/realtime?q=%23PDFTribute&src=hash")
@@ -34,11 +39,14 @@ class TributeScraper
     get_links_from_tweets.each do |tweet_link|
       current_local_links = get_local_links_list
       pdf_links = download_pdfs_from_link(tweet_link)
+      puts "local: " + current_local_links.join(", ")
+      puts "pdf  : " + pdf_links.join(", ")
       links_to_write = pdf_links - current_local_links
       unless links_to_write.empty?
         File.open("current_links.txt", "a") do |f|
-          f.write(", ")
-          f.write(links_to_write.join(", "))
+          links_to_write.each do |ltw|
+            f.puts ltw
+          end
         end
       end
       puts links_to_write.count
